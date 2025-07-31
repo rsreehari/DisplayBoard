@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Share - Instant Upload & Gallery</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">📸 PhotoShare</h1>
+            <p class="tagline">Share your moments instantly - no login required!</p>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <div class="upload-card">
+                    <h2>Upload Your Photo</h2>
+                    <form id="uploadForm" class="upload-form">
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-icon">📷</div>
+                            <p class="upload-text">
+                                <strong>Click to upload</strong> or drag and drop
+                            </p>
+                            <p class="upload-subtext">PNG, JPG, GIF up to 10MB</p>
+                            <input type="file" id="photoInput" name="photo" accept="image/*" hidden>
+                        </div>
+                        <button type="submit" id="uploadBtn" class="upload-btn" disabled>
+                            Upload Photo
+                        </button>
+                    </form>
+                    
+                    <!-- QR Scanner Section -->
+                    <div class="qr-section">
+                        <button id="qrBtn" class="qr-btn">📱 Scan QR Code to Upload</button>
+                        <div id="qrReader" class="qr-reader" style="display: none;">
+                            <div id="qrReaderDiv"></div>
+                            <button id="stopQrBtn" class="stop-qr-btn">Stop Scanner</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gallery Section -->
+            <section class="gallery-section">
+                <div class="gallery-header">
+                    <h2>Live Gallery</h2>
+                    <div class="gallery-stats">
+                        <span id="imageCount">0 photos</span>
+                        <button id="refreshBtn" class="refresh-btn">🔄 Refresh</button>
+                    </div>
+                </div>
+                
+                <div id="loadingSpinner" class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Loading gallery...</p>
+                </div>
+                
+                <div id="gallery" class="gallery">
+                    <!-- Images will be loaded here dynamically -->
+                </div>
+                
+                <div id="emptyGallery" class="empty-gallery" style="display: none;">
+                    <div class="empty-icon">🖼️</div>
+                    <h3>No photos yet</h3>
+                    <p>Be the first to share a photo!</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Upload Progress Modal -->
+    <div id="uploadModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="upload-progress">
+                <div class="progress-icon">⏳</div>
+                <h3>Uploading your photo...</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Preview Modal -->
+    <div id="imageModal" class="modal" style="display: none;">
+        <div class="modal-content image-modal-content">
+            <span class="close-btn">&times;</span>
+            <img id="modalImage" src="" alt="">
+            <div class="image-info">
+                <h3 id="modalTitle"></h3>
+                <p id="modalDetails"></p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 PhotoShare - Open photo sharing for everyone</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
