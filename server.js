@@ -46,37 +46,20 @@ app.use('/uploads', express.static('uploads'));
 
 // API endpoint to get all uploaded images
 app.get('/api/images', (req, res) => {
-    try {
-        const files = fs.readdirSync(uploadsDir);
-        const imageFiles = files.filter(file => {
-            const ext = path.extname(file).toLowerCase();
-            return ['.jpg', '.jpeg', '.png', '.gif', '.webp'].includes(ext);
-        });
-
-        const images = imageFiles.map(filename => {
-            const filePath = path.join(uploadsDir, filename);
-            const stats = fs.statSync(filePath);
-            
-            // Extract original filename (remove timestamp prefix)
-            const originalName = filename.substring(filename.indexOf('_') + 1);
-            
-            return {
-                filename: filename,
-                originalName: originalName,
-                uploadTime: stats.birthtime,
-                size: stats.size,
-                url: `/uploads/${filename}`
-            };
-        });
-
-        // Sort by upload time (newest first)
-        images.sort((a, b) => new Date(b.uploadTime) - new Date(a.uploadTime));
-        
+    // This should return an array of image objects, e.g.:
+    // [{ url: '/uploads/filename.jpg', uploadTime: 1234567890 }, ...]
+    // Example:
+    const fs = require('fs');
+    const path = require('path');
+    const uploadsDir = path.join(__dirname, 'uploads');
+    fs.readdir(uploadsDir, (err, files) => {
+        if (err) return res.json([]);
+        const images = files.map(file => ({
+            url: '/uploads/' + file,
+            uploadTime: fs.statSync(path.join(uploadsDir, file)).mtime
+        }));
         res.json(images);
-    } catch (error) {
-        console.error('Error reading images:', error);
-        res.status(500).json({ error: 'Failed to load images' });
-    }
+    });
 });
 
 // API endpoint to upload images
