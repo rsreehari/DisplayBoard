@@ -216,10 +216,12 @@ function createGalleryItem(image) {
     const formattedTime = uploadDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
     item.innerHTML = `
-        <img src="${image.url}" alt="Uploaded Photo" loading="lazy">
-        <div class="gallery-item-info">
-            <p>🗓️ ${formattedDate}</p>
-            <p>⏰ ${formattedTime}</p>
+        <div class="gallery-image-wrapper">
+            <img src="${image.url}" alt="Uploaded Photo" loading="lazy">
+            <div class="gallery-badge">
+                <span class="badge-date">${formattedDate}</span>
+                <span class="badge-time">${formattedTime}</span>
+            </div>
         </div>
     `;
 
