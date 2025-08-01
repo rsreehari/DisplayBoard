@@ -85,6 +85,9 @@ app.post('/api/upload', upload.single('photo'), (req, res) => {
     }
 });
 
+// Health check endpoint
+app.get('/healthz', (req, res) => res.send('OK'));
+
 // Error handling middleware
 app.use((error, req, res, next) => {
     if (error instanceof multer.MulterError) {
@@ -99,6 +102,35 @@ app.use((error, req, res, next) => {
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+
+// Auto-delete images older than 24 hours (runs every hour)
+const DELETE_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
+const IMAGE_LIFETIME_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+function deleteOldImages() {
+    fs.readdir(uploadsDir, (err, files) => {
+        if (err) return;
+        const now = Date.now();
+        files.forEach(file => {
+            const filePath = path.join(uploadsDir, file);
+            fs.stat(filePath, (err, stats) => {
+                if (err) return;
+                if (now - stats.mtimeMs > IMAGE_LIFETIME_MS) {
+                    fs.unlink(filePath, err => {
+                        if (!err) {
+                            console.log(`Deleted old image: ${file}`);
+                        }
+                    });
+                }
+            });
+        });
+    });
+}
+
+setInterval(deleteOldImages, DELETE_INTERVAL_MS);
+// Run once on startup as well
+deleteOldImages();
 
 app.listen(PORT, () => {
     console.log(`Photo sharing server running on http://localhost:${PORT}`);
