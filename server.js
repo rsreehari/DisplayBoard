@@ -46,6 +46,11 @@ const upload = multer({
 app.use(express.static('public'));
 app.use('/uploads', express.static('uploads'));
 
+// Serve the mobile upload page at /upload
+app.get('/upload', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'upload.html'));
+});
+
 // API endpoint to get all uploaded images
 app.get('/api/images', (req, res) => {
     // This should return an array of image objects, e.g.:
