@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Photo</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { background: var(--dark-bg); color: var(--text-primary); }
+    .upload-mobile-container { max-width: 400px; margin: 40px auto; background: rgba(255,255,255,0.07); border-radius: 18px; box-shadow: 0 4px 32px rgba(79,140,255,0.10); padding: 2.5rem 1.5rem; text-align: center; }
+    .upload-mobile-container h2 { margin-bottom: 1.5rem; font-size: 1.5rem; }
+    .upload-mobile-container input[type=file] { margin-bottom: 1.2rem; }
+    .upload-mobile-container button { background: var(--primary-gradient); color: #fff; border: none; padding: 0.9rem 2.2rem; border-radius: 30px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+    .upload-mobile-container .notification { margin-top: 1.2rem; }
+  </style>
+</head>
+<body>
+  <div class="upload-mobile-container">
+    <h2>Upload a Photo</h2>
+    <form id="mobileUploadForm">
+      <input type="file" id="mobilePhotoInput" name="photo" accept="image/*" required><br>
+      <button type="submit">Upload</button>
+    </form>
+    <div id="mobileNotification"></div>
+  </div>
+  <script>
+    const form = document.getElementById('mobileUploadForm');
+    const input = document.getElementById('mobilePhotoInput');
+    const notification = document.getElementById('mobileNotification');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const file = input.files[0];
+      if (!file) {
+        showMsg('Please select an image.', 'error');
+        return;
+      }
+      if (!file.type.startsWith('image/')) {
+        showMsg('Only image files allowed.', 'error');
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        showMsg('File must be less than 10MB.', 'error');
+        return;
+      }
+      const formData = new FormData();
+      formData.append('photo', file);
+      try {
+        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        const result = await res.json();
+        if (result.success) {
+          showMsg('Photo uploaded successfully!', 'success');
+          form.reset();
+        } else {
+          showMsg(result.error || 'Upload failed.', 'error');
+        }
+      } catch (err) {
+        showMsg('Upload failed. Please try again.', 'error');
+      }
+    });
+    function showMsg(msg, type) {
+      notification.textContent = msg;
+      notification.style.color = type === 'success' ? '#28a745' : '#dc3545';
+      notification.style.fontWeight = '600';
+    }
+  </script>
+</body>
+</html>

@@ -771,3 +771,1051 @@ body::before {
         border-radius: 10px;
     }
 }
+
+/* Custom styles for upload page */
+
+.upload-page {
+    background: var(--dark-bg);
+    color: var(--text-primary);
+    padding: 2rem 0;
+    min-height: calc(100vh - 4rem);
+}
+
+.upload-page h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    position: relative;
+}
+
+.upload-page h1::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    bottom: -4px;
+    left: 0;
+    background: var(--primary-gradient);
+    border-radius: 2px;
+}
+
+.upload-page p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.upload-page .upload-card {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2.5rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 24px rgba(79,140,255,0.12);
+}
+
+.upload-page .upload-card h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    position: relative;
+}
+
+.upload-page .upload-card h2::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background: var(--primary-gradient);
+    border-radius: 2px;
+}
+
+.upload-page .upload-card .upload-area {
+    border: 2px dashed var(--neon-blue);
+    border-radius: 18px;
+    padding: 3rem 1.5rem;
+    margin-bottom: 2rem;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(79,140,255,0.06);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(79,140,255,0.08);
+}
+
+.upload-page .upload-card .upload-area:hover {
+    border-color: var(--neon-purple);
+    background: rgba(162,89,255,0.10);
+    box-shadow: 0 0 32px rgba(162,89,255,0.12), 0 2px 16px rgba(79,140,255,0.06);
+    transform: translateY(-4px) scale(1.01);
+}
+
+.upload-page .upload-card .upload-area.dragover {
+    border-color: var(--neon-pink);
+    background: rgba(255, 0, 128, 0.1);
+    box-shadow: 
+        0 0 50px rgba(255, 0, 128, 0.4),
+        inset 0 0 50px rgba(255, 0, 128, 0.2);
+    transform: scale(1.05) translateY(-10px);
+    animation: pulse-drag 0.5s ease infinite alternate;
+}
+
+.upload-page .upload-card .upload-icon {
+    font-size: 4.5rem;
+    margin-bottom: 1.5rem;
+    animation: float-icon 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 10px rgba(0, 245, 255, 0.5));
+}
+
+.upload-page .upload-card .upload-text {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
+}
+
+.upload-page .upload-card .upload-btn {
+    background: var(--primary-gradient);
+    color: var(--text-primary);
+    border: none;
+    padding: 1.2rem 2.5rem;
+    border-radius: 40px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    max-width: 350px;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 16px rgba(79,140,255,0.10);
+}
+
+.upload-page .upload-card .upload-btn:hover:not(:disabled) {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 
+        0 0 40px rgba(0, 245, 255, 0.6),
+        0 20px 40px rgba(0, 245, 255, 0.2),
+        inset 0 0 40px rgba(0, 245, 255, 0.2);
+    border-color: rgba(0, 245, 255, 0.5);
+}
+
+.upload-page .upload-card .upload-btn:active:not(:disabled) {
+    transform: translateY(-2px) scale(1.02);
+}
+
+.upload-page .upload-card .upload-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    filter: grayscale(1);
+    box-shadow: none;
+}
+
+/* Specific styles for the upload form */
+.upload-form {
+    margin-top: 2rem;
+}
+
+.upload-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.upload-form input[type="text"],
+.upload-form input[type="file"] {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    transition: border-color 0.3s ease;
+}
+
+.upload-form input[type="text"]:focus,
+.upload-form input[type="file"]:focus {
+    border-color: var(--neon-blue);
+    outline: none;
+}
+
+.upload-form button[type="submit"] {
+    background: var(--primary-gradient);
+    color: var(--text-primary);
+    border: none;
+    padding: 1.2rem 2.5rem;
+    border-radius: 40px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    max-width: 350px;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 16px rgba(79,140,255,0.10);
+}
+
+.upload-form button[type="submit"]:hover:not(:disabled) {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 
+        0 0 40px rgba(0, 245, 255, 0.6),
+        0 20px 40px rgba(0, 245, 255, 0.2),
+        inset 0 0 40px rgba(0, 245, 255, 0.2);
+    border-color: rgba(0, 245, 255, 0.5);
+}
+
+.upload-form button[type="submit"]:active:not(:disabled) {
+    transform: translateY(-2px) scale(1.02);
+}
+
+.upload-form button[type="submit"]:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    filter: grayscale(1);
+    box-shadow: none;
+}
+
+/* Link styles */
+a {
+    color: var(--neon-blue);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--neon-purple);
+    text-decoration: underline;
+}
+
+a:active {
+    color: var(--neon-pink);
+}
+
+/* Specific styles for the upload page link */
+.upload-link {
+    display: inline-block;
+    margin-top: 2rem;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    position: relative;
+}
+
+.upload-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background: var(--primary-gradient);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.upload-link:hover::after {
+    transform: scaleX(1);
+}
+
+/* Specific styles for the upload success message */
+.success-message {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 1.5rem;
+    border: 1px solid rgba(40, 167, 69, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.success-message svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.success-message p {
+    margin: 0;
+    flex: 1;
+}
+
+.success-message a {
+    color: #28a745;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.success-message a:hover {
+    color: #218838;
+}
+
+/* Specific styles for the upload error message */
+.error-message {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 1.5rem;
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.error-message svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.error-message p {
+    margin: 0;
+    flex: 1;
+}
+
+.error-message a {
+    color: #dc3545;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.error-message a:hover {
+    color: #c82333;
+}
+
+/* Specific styles for the upload progress bar */
+.upload-progress {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.upload-progress .progress-bar {
+    height: 8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    width: 0%;
+    animation: progress 2s ease-in-out;
+}
+
+.upload-progress .progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    width: 0%;
+    animation: progress 2s ease-in-out;
+}
+
+/* Specific styles for the upload cancel button */
+.cancel-upload {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.cancel-upload:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload retry button */
+.retry-upload {
+    background: #17a2b8;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.retry-upload:hover {
+    background: #138496;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload complete message */
+.complete-message {
+    background: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 1.5rem;
+    border: 1px solid rgba(40, 167, 69, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.complete-message svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.complete-message p {
+    margin: 0;
+    flex: 1;
+}
+
+.complete-message a {
+    color: #28a745;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.complete-message a:hover {
+    color: #218838;
+}
+
+/* Specific styles for the upload pending message */
+.pending-message {
+    background: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 1.5rem;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.pending-message svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.pending-message p {
+    margin: 0;
+    flex: 1;
+}
+
+.pending-message a {
+    color: #ffc107;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.pending-message a:hover {
+    color: #e0a800;
+}
+
+/* Specific styles for the upload file list */
+.file-list {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+}
+
+.file-list h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.file-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.file-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.file-list li:last-child {
+    border-bottom: none;
+}
+
+.file-list .file-name {
+    font-size: 1rem;
+    color: var(--text-primary);
+}
+
+.file-list .file-size {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.file-list .file-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.file-list .file-actions button {
+    background: var(--primary-gradient);
+    color: var(--text-primary);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.file-list .file-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(79,140,255,0.15);
+}
+
+.file-list .file-actions button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Specific styles for the upload file preview */
+.file-preview {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+}
+
+.file-preview h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.file-preview img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.file-preview video {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.file-preview audio {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+/* Specific styles for the upload file details */
+.file-details {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+}
+
+.file-details h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.file-details p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.file-details .detail-item {
+    margin-bottom: 0.8rem;
+}
+
+.file-details .detail-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Specific styles for the upload file actions */
+.file-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.file-actions button {
+    background: var(--primary-gradient);
+    color: var(--text-primary);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.file-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(79,140,255,0.15);
+}
+
+.file-actions button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Specific styles for the upload file delete confirmation */
+.delete-confirmation {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 1.5rem;
+    border: 1px solid rgba(220, 53, 69, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.delete-confirmation svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.delete-confirmation p {
+    margin: 0;
+    flex: 1;
+}
+
+.delete-confirmation button {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.delete-confirmation button:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file restore button */
+.restore-file {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.restore-file:hover {
+    background: #218838;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file permanently delete button */
+.permanently-delete {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.permanently-delete:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file download button */
+.download-file {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.download-file:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file share button */
+.share-file {
+    background: #17a2b8;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.share-file:hover {
+    background: #138496;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file preview button */
+.preview-file {
+    background: #ffc107;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.preview-file:hover {
+    background: #e0a800;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file edit button */
+.edit-file {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edit-file:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file move button */
+.move-file {
+    background: #17a2b8;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.move-file:hover {
+    background: #138496;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file copy button */
+.copy-file {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.copy-file:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file zip button */
+.zip-file {
+    background: #17a2b8;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.zip-file:hover {
+    background: #138496;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file unarchive button */
+.unarchive-file {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.unarchive-file:hover {
+    background: #218838;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file archive button */
+.archive-file {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.archive-file:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file lock button */
+.lock-file {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.lock-file:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file unlock button */
+.unlock-file {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.unlock-file:hover {
+    background: #218838;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file download all button */
+.download-all {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.download-all:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file share all button */
+.share-all {
+    background: #17a2b8;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.share-all:hover {
+    background: #138496;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file delete all button */
+.delete-all {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.delete-all:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file restore all button */
+.restore-all {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.restore-all:hover {
+    background: #218838;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file permanently delete all button */
+.permanently-delete-all {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.permanently-delete-all:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file zip all button */
+.zip-all {
+    background: #17a2b8;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.zip-all:hover {
+    background: #138496;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file unarchive all button */
+.unarchive-all {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.unarchive-all:hover {
+    background: #218838;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file archive all button */
+.archive-all {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.archive-all:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file lock all button */
+.lock-all {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.lock-all:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+}
+
+/* Specific styles for the upload file unlock all button */
+.unlock-all {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.unlock-all:hover {
+    background: #218838;
+    transform: translateY(-1px);
+}

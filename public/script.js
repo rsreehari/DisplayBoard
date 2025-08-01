@@ -22,6 +22,56 @@ const qrBtn = document.getElementById('qrBtn');
 const qrReader = document.getElementById('qrReader');
 const stopQrBtn = document.getElementById('stopQrBtn');
 
+// --- QR for Mobile Upload ---
+let qrUploadBtn = document.getElementById('qrUploadBtn');
+let qrUploadModal = null;
+function createQrUploadBtn() {
+  if (qrUploadBtn) return;
+  qrUploadBtn = document.createElement('button');
+  qrUploadBtn.id = 'qrUploadBtn';
+  qrUploadBtn.textContent = '📱 Upload from Mobile (QR)';
+  qrUploadBtn.className = 'upload-btn';
+  qrUploadBtn.style.margin = '1.2rem auto 0 auto';
+  qrUploadBtn.style.display = 'block';
+  uploadArea.parentNode.insertBefore(qrUploadBtn, uploadArea.nextSibling);
+  qrUploadBtn.onclick = showQrUploadModal;
+}
+
+function showQrUploadModal() {
+  if (!qrUploadModal) {
+    qrUploadModal = document.createElement('div');
+    qrUploadModal.className = 'modal';
+    qrUploadModal.style.zIndex = 10010;
+    qrUploadModal.innerHTML = `
+      <div class="modal-content" style="max-width:350px;text-align:center;padding:2.2rem 1.5rem;">
+        <h2 style="margin-bottom:1.2rem;">Scan to Upload</h2>
+        <div id="qrUploadCode" style="margin:0 auto 1.2rem auto;"></div>
+        <div style="color:#888;font-size:1rem;margin-bottom:1.2rem;">Scan this QR code with your phone to upload a photo directly from your device.</div>
+        <button id="closeQrUploadModal" class="upload-btn" style="background:#dc3545;max-width:180px;">Close</button>
+      </div>
+    `;
+    document.body.appendChild(qrUploadModal);
+    document.getElementById('closeQrUploadModal').onclick = () => { qrUploadModal.style.display = 'none'; };
+  }
+  qrUploadModal.style.display = 'flex';
+  // Generate QR code for public Render URL /upload
+  let qrDiv = document.getElementById('qrUploadCode');
+  qrDiv.innerHTML = '';
+  let url = 'https://displayboard.onrender.com/upload';
+  if (!window.QRCode) {
+    let script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js';
+    script.onload = () => { new QRCode(qrDiv, { text: url, width: 200, height: 200 }); };
+    document.body.appendChild(script);
+  } else {
+    new QRCode(qrDiv, { text: url, width: 200, height: 200 });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  createQrUploadBtn();
+});
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
