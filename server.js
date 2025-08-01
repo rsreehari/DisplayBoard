@@ -1,3 +1,5 @@
+// Admin password for deletion (set your own secure password here or use an environment variable)
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin.hari.123';
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
@@ -131,6 +133,35 @@ function deleteOldImages() {
 setInterval(deleteOldImages, DELETE_INTERVAL_MS);
 // Run once on startup as well
 deleteOldImages();
+
+// API endpoint to delete an image (admin only)
+app.delete('/api/delete-image', express.json(), (req, res) => {
+    const { filename, password } = req.body;
+    console.log('[DELETE] Attempt:', { filename, password });
+    if (password !== ADMIN_PASSWORD) {
+        console.log('[DELETE] Invalid password');
+        return res.status(401).json({ error: 'Unauthorized: Invalid password' });
+    }
+    if (!filename) {
+        console.log('[DELETE] No filename provided');
+        return res.status(400).json({ error: 'Filename required' });
+    }
+    const filePath = path.join(uploadsDir, filename);
+    fs.access(filePath, fs.constants.F_OK, (accessErr) => {
+        if (accessErr) {
+            console.log('[DELETE] File does not exist:', filePath);
+            return res.status(404).json({ error: 'File not found or already deleted' });
+        }
+        fs.unlink(filePath, err => {
+            if (err) {
+                console.log('[DELETE] Unlink error:', err);
+                return res.status(500).json({ error: 'Failed to delete file' });
+            }
+            console.log('[DELETE] Success:', filePath);
+            res.json({ success: true, message: 'Image deleted' });
+        });
+    });
+});
 
 app.listen(PORT, () => {
     console.log(`Photo sharing server running on http://localhost:${PORT}`);

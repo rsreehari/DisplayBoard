@@ -206,6 +206,110 @@ function displayImages(images) {
     });
 }
 
+// --- Password Modal Logic ---
+let passwordModal = null;
+let passwordInput = null;
+let passwordSubmitBtn = null;
+let passwordCancelBtn = null;
+let passwordModalCallback = null;
+let passwordModalFilename = null;
+let passwordModalDeleteBtn = null;
+
+function createPasswordModal() {
+    if (document.getElementById('passwordModal')) return;
+    passwordModal = document.createElement('div');
+    passwordModal.id = 'passwordModal';
+    passwordModal.innerHTML = `
+        <div class="modal-content password-modal-content" style="max-width:370px;padding:2.2rem 2.2rem 1.5rem 2.2rem;box-shadow:0 8px 40px rgba(79,140,255,0.18);border-radius:18px;background:var(--modal-content-bg,rgba(255,255,255,0.98));border:1.5px solid var(--glass-border,rgba(255,255,255,0.18));text-align:center;animation:fadeInScale 0.35s cubic-bezier(.4,2,.6,1) forwards;">
+            <div style="font-size:2.7rem;margin-bottom:0.5rem;color:#dc3545;line-height:1;">
+                <svg width="38" height="38" viewBox="0 0 24 24" fill="none" style="display:inline-block;vertical-align:middle;"><path d="M12 2C7.03 2 3 6.03 3 11c0 4.97 4.03 9 9 9s9-4.03 9-9c0-4.97-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm-1-3h2v2h-2zm0-8h2v6h-2z" fill="#dc3545"/></svg>
+            </div>
+            <h3 style="margin-bottom:0.7rem;font-weight:700;color:#222;letter-spacing:-0.5px;">Admin Delete</h3>
+            <div style="color:#888;font-size:1rem;margin-bottom:1.2rem;">Enter the admin password to delete this photo. This action cannot be undone.</div>
+            <input type="password" id="passwordInput" placeholder="Admin password" style="width:100%;padding:0.8rem 1rem;font-size:1.1rem;border-radius:8px;border:1.5px solid #bbb;margin-bottom:1.1rem;outline:none;transition:border 0.2s;">
+            <div id="passwordErrorMsg" style="color:#dc3545;font-size:0.98rem;min-height:1.2em;margin-bottom:1.1rem;display:none;"></div>
+            <div style="display:flex;gap:1rem;justify-content:flex-end;">
+                <button id="passwordCancelBtn" style="background:#f3f3f3;color:#222;padding:0.7rem 1.5rem;border:none;border-radius:8px;cursor:pointer;font-weight:500;box-shadow:0 1px 4px rgba(0,0,0,0.04);">Cancel</button>
+                <button id="passwordSubmitBtn" style="background:linear-gradient(120deg,#4f8cff 0%,#a259ff 100%);color:#fff;padding:0.7rem 1.5rem;border:none;border-radius:8px;cursor:pointer;font-weight:600;box-shadow:0 2px 8px rgba(79,140,255,0.10);transition:background 0.2s;">Delete</button>
+            </div>
+        </div>
+    `;
+    Object.assign(passwordModal.style, {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        background: 'rgba(20,24,34,0.85)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 10001,
+        backdropFilter: 'blur(2.5px)',
+        animation: 'fadeInBg 0.25s cubic-bezier(.4,2,.6,1) forwards'
+    });
+    // Add fadeIn keyframes if not present
+    if (!document.getElementById('pwModalAnim')) {
+        const style = document.createElement('style');
+        style.id = 'pwModalAnim';
+        style.innerHTML = `@keyframes fadeInScale{0%{opacity:0;transform:scale(0.95);}100%{opacity:1;transform:scale(1);}}@keyframes fadeInBg{0%{opacity:0;}100%{opacity:1;}}`;
+        document.head.appendChild(style);
+    }
+    document.body.appendChild(passwordModal);
+    passwordInput = document.getElementById('passwordInput');
+    passwordSubmitBtn = document.getElementById('passwordSubmitBtn');
+    passwordCancelBtn = document.getElementById('passwordCancelBtn');
+    passwordErrorMsg = document.getElementById('passwordErrorMsg');
+
+    passwordCancelBtn.onclick = hidePasswordModal;
+    passwordInput.onkeydown = (e) => {
+        if (e.key === 'Enter') passwordSubmitBtn.click();
+    };
+    passwordModal.addEventListener('click', (e) => {
+        if (e.target === passwordModal) hidePasswordModal();
+    });
+}
+
+function showPasswordModal(filename, deleteBtn, callback) {
+    createPasswordModal();
+    passwordModal.style.display = 'flex';
+    passwordInput.value = '';
+    passwordInput.focus();
+    passwordErrorMsg.style.display = 'none';
+    passwordErrorMsg.textContent = '';
+    passwordModalCallback = callback;
+    passwordModalFilename = filename;
+    passwordModalDeleteBtn = deleteBtn;
+    passwordSubmitBtn.onclick = async () => {
+        const password = passwordInput.value;
+        if (!password) {
+            passwordErrorMsg.textContent = 'Please enter the admin password.';
+            passwordErrorMsg.style.display = 'block';
+            passwordInput.style.border = '1.5px solid #dc3545';
+            passwordInput.focus();
+            return;
+        } else {
+            passwordErrorMsg.style.display = 'none';
+            passwordInput.style.border = '1.5px solid #bbb';
+        }
+        passwordModalDeleteBtn.disabled = true;
+        passwordModalDeleteBtn.style.opacity = '0.5';
+        try {
+            await passwordModalCallback(password, passwordModalFilename, passwordModalDeleteBtn);
+        } finally {
+            hidePasswordModal();
+        }
+    };
+}
+
+function hidePasswordModal() {
+    if (passwordModal) passwordModal.style.display = 'none';
+    if (passwordModalDeleteBtn) {
+        passwordModalDeleteBtn.disabled = false;
+        passwordModalDeleteBtn.style.opacity = '1';
+    }
+}
+
 // Create gallery item element
 function createGalleryItem(image) {
     const item = document.createElement('div');
@@ -222,11 +326,48 @@ function createGalleryItem(image) {
                 <span class="badge-date">${formattedDate}</span>
                 <span class="badge-time">${formattedTime}</span>
             </div>
+            <button class="delete-btn" title="Delete Photo" style="display:none;position:absolute;top:10px;left:10px;background:rgba(220,53,69,0.85);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;z-index:3;align-items:center;justify-content:center;transition:background 0.2s;">
+                <span style="color:#fff;font-size:1.2rem;line-height:1;">&#128465;</span>
+            </button>
         </div>
     `;
 
-    // Add click event to open modal
-    item.addEventListener('click', () => openImageModal(image));
+    // Add click event to open modal (ignore if delete button is clicked)
+    item.addEventListener('click', (e) => {
+        if (e.target.closest('.delete-btn')) return;
+        openImageModal(image);
+    });
+
+    // Show delete button on hover (desktop only)
+    const wrapper = item.querySelector('.gallery-image-wrapper');
+    const deleteBtn = item.querySelector('.delete-btn');
+    wrapper.addEventListener('mouseenter', () => { deleteBtn.style.display = 'flex'; });
+    wrapper.addEventListener('mouseleave', () => { deleteBtn.style.display = 'none'; });
+
+    // Delete button logic with custom modal
+    deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const filename = image.url.split('/').pop();
+        showPasswordModal(filename, deleteBtn, async (password, filename, deleteBtn) => {
+            try {
+                const res = await fetch('/api/delete-image', {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename, password })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    showNotification('Photo deleted!', 'success');
+                    item.remove();
+                    updateImageCount(document.querySelectorAll('.gallery-item').length);
+                } else {
+                    showNotification(result.error || 'Delete failed', 'error');
+                }
+            } catch (err) {
+                showNotification('Delete failed. Please try again.', 'error');
+            }
+        });
+    });
 
     return item;
 }
