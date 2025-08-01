@@ -57,7 +57,7 @@ function showQrUploadModal() {
   // Generate QR code for public Render URL /upload
   let qrDiv = document.getElementById('qrUploadCode');
   qrDiv.innerHTML = '';
-  let url = 'https://displayboard.onrender.com/uploads';
+  let url = 'https://displayboard.onrender.com/upload';
   if (!window.QRCode) {
     let script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js';
